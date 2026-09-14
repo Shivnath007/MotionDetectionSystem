@@ -4,6 +4,7 @@ import camera.CameraManager;
 import org.opencv.core.Mat;
 import detection.MotionDetector;
 import events.MotionEvent;
+import events.EventHistory;
 import events.EventManager;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,7 +53,11 @@ public class Main {
                     eventManager.addEvent(motionEvent);
                 } 
                 else if (!motionEvent.isMotionDetected() && previousMotionDetected) {
-                    eventManager.endActiveEvent(motionEvent.getTimestamp());
+                    MotionEvent endedEvent = eventManager.endActiveEvent(motionEvent.getTimestamp());
+
+                    if(endedEvent != null) {
+                        System.out.println("Motion Duration: " + endedEvent.getDuration() + "ms");
+                    }
                 }
 
                 System.out.println("Motion detected: " + motionEvent.isMotionDetected() + " at timestamp: "
@@ -66,7 +71,9 @@ public class Main {
 
                 Thread.sleep(100);
             }
-            System.out.println("Stored events: " + eventManager.getEvents());
+            EventHistory eventHistory = new EventHistory(eventManager.getEvents());
+            System.out.println("Total motion events: " + eventHistory.getEventCount());
+            System.out.println("First event: " + eventHistory.getEvent(0));
             cameraManager.releaseCamera();
         }
         sc.close();
