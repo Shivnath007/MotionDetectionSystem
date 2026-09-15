@@ -5,6 +5,7 @@ import org.opencv.core.Mat;
 import detection.MotionDetector;
 import events.MotionEvent;
 import events.EventHistory;
+import events.EventHistoryPrinter;
 import events.EventManager;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -72,8 +73,12 @@ public class Main {
                 Thread.sleep(100);
             }
             EventHistory eventHistory = new EventHistory(eventManager.getEvents());
+            EventHistoryPrinter printer = new EventHistoryPrinter();
             System.out.println("Total motion events: " + eventHistory.getEventCount());
-            System.out.println("First event: " + eventHistory.getEvent(0));
+            System.out.println("Total motion duration: " + eventHistory.getTotalDuration() + " ms");
+            System.out.println("Longest motion duration: " + eventHistory.getLongestDuration());
+            System.out.println("Average motion duration: " + eventHistory.getAverageDuration());
+            printer.printHistory(eventHistory);
             cameraManager.releaseCamera();
         }
         sc.close();

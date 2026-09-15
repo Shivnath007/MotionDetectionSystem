@@ -31,6 +31,9 @@ public class MotionEvent {
         }
         return endTimestamp - timestamp;
     }
+    public long getEndTimestamp() {
+        return endTimestamp;
+    }
     @Override 
     public String toString() {
         return "MotionEvent{" +
