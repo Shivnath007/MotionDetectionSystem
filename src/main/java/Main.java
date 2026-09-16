@@ -1,9 +1,12 @@
+import java.util.List;
 import java.util.Scanner;
 
 import camera.CameraManager;
 import org.opencv.core.Mat;
 import detection.MotionDetector;
 import events.MotionEvent;
+import objectdetection.DetectedObject;
+import objectdetection.ObjectDetector;
 import events.EventHistory;
 import events.EventHistoryPrinter;
 import events.EventManager;
@@ -16,6 +19,7 @@ public class Main {
         CameraManager cameraManager = new CameraManager();
         MotionDetector motionDetector = new MotionDetector();
         EventManager eventManager = new EventManager();
+        ObjectDetector objectDetector = new ObjectDetector();
         Scanner sc = new Scanner(System.in);
         AtomicBoolean running = new AtomicBoolean(true);
 
@@ -39,9 +43,12 @@ public class Main {
             }
 
             boolean previousMotionDetected = false;
+
             while (running.get()) {
 
                 Mat currentFrame = cameraManager.captureFrame();
+                List<DetectedObject> objects = objectDetector.detectObjects(currentFrame);
+                System.out.println("Detected objects: " + objects.size());
 
                 if (currentFrame == null) {
                     System.out.println("Failed to capture frame.");
