@@ -11,6 +11,7 @@ import events.EventHistory;
 import events.EventHistoryPrinter;
 import events.EventManager;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.opencv.core.Core;
 
 public class Main {
 
@@ -19,7 +20,7 @@ public class Main {
         CameraManager cameraManager = new CameraManager();
         MotionDetector motionDetector = new MotionDetector();
         EventManager eventManager = new EventManager();
-        ObjectDetector objectDetector = new ObjectDetector();
+        
         Scanner sc = new Scanner(System.in);
         AtomicBoolean running = new AtomicBoolean(true);
 
@@ -30,6 +31,7 @@ public class Main {
         inputThread.start();
 
         boolean opened = cameraManager.openCamera();
+        ObjectDetector objectDetector = new ObjectDetector();
 
         if (opened) {
 
